@@ -2,17 +2,18 @@ NAME
     Data::ConveyorBelt
 
 SYNOPSIS
+        my @data = ( 1 .. 15 );
+
         my $machine = Data::ConveyorBelt->new;
         $machine->getter( sub {
             my( $limit, $offset ) = @_;
-            my $data = ...
-            return $data;
+            $offset ||= 0;
+            return [ @data[ $offset .. $offset + $limit ] ];
         } );
 
         $machine->add_filter( sub {
             my( $data ) = @_;
-            ...
-            return $data;
+            return [ grep { $_ % 2 == 1 } @$data ];
         } );
     
         my $data = $machine->fetch( limit => 5 );
